@@ -1,5 +1,6 @@
 package Customer;
 
+import java.rmi.Remote;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 import Counsel.CounselApplication;
 import Dao.CustomerDao;
 
-public class CustomerListImpl implements CustomerList {
+public class CustomerListImpl implements CustomerList, Remote {
 
 	// 만기계약대상자/미납대상자/부활대상자 enum
 	public enum TargetType {

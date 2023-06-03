@@ -197,9 +197,13 @@ public class CustomerListImpl implements CustomerList {
 	}
 
 
-	@Override
-	public Customer getCustomerFromCouncels(CounselApplication counselApplication, CustomerList customerListImpl) {
-		// TODO Auto-generated method stub
+	public Customer getCustomerFromCouncels(String customerId) {
+		System.out.println("입력 : ");
+		for (Customer customer : customerList) {
+			System.out.println(customer.getCustomerID() + ", " + customer.getCustomerName());
+			if (customer.getCustomerID().equals(customerId))
+				return customer;
+		}
 		return null;
 	}
 

@@ -1,4 +1,4 @@
-package server;
+
 
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -11,6 +11,7 @@ import Counsel.CounselApplicationListImpl;
 import Counsel.CounselListImpl;
 import Customer.CustomerListImpl;
 import Customer.FamilyHistoryListImpl;
+import Interface.Customer_ServerIF;
 import Counsel.CounselApplicationList;
 import Counsel.CounselList;
 import Customer.CustomerList;

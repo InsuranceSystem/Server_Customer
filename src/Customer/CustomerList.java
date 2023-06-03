@@ -12,7 +12,6 @@ public interface CustomerList {
 	public boolean update(Customer customer, String customerID);
 	public ArrayList<Customer> retrieve();
 	public Customer getCustomerByID(String customerID);
-	public Customer getCustomerFromCouncels(CounselApplication counselApplication, CustomerList customerListImpl);
 	public Customer retrieveCustomer(String input);
 	public ArrayList<Customer> getResurrectCandidates(ContractList contractListImpl);
 	public void deleteResurrectCandidatesCustomer(Customer customer);
@@ -24,7 +23,6 @@ public interface CustomerList {
 	public String getCustomerIdFromNameAndPH(String customerName, String customerPH);
 	public void deleteUnpaidCustomer(Customer retrieveCustomer);
 	public List<Contract> getContractFromCustomerId(String customerID, ContractList contractListImpl);
-	
 	public Customer getCustomerFromCouncels(String customerId);
 
 }

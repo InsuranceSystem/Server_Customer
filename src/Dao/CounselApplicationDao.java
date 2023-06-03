@@ -5,8 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Counsel.CounselApplication;
-
-public class CounselApplicationDao extends Dao{
+	public class CounselApplicationDao extends Dao{
 		public CounselApplicationDao() {
 			try {
 				super.connect();
@@ -17,8 +16,7 @@ public class CounselApplicationDao extends Dao{
 		}
 		public void create(CounselApplication counselApplication) throws Exception {
 			//쿼리 제조
-			String query = "insert into counselApplication ( CounselApplicationID,category, counselID,customerID, dateOfFirst,dateOfSecond,requirement ) values ( " +
-					" '" + counselApplication.getCounselApplicationID() + "', " +
+			String query = "insert into counselApplication (category, counselID,customerID, dateOfFirst,dateOfSecond,requirement ) values ( " +
 					" '" + counselApplication.getCategory()+ "', " +
 					" '" + counselApplication.getCounselID()+ "', " +
 					" '" + counselApplication.getCustomerID()+ "', " +
@@ -41,17 +39,16 @@ public class CounselApplicationDao extends Dao{
 	        CounselApplication counselApplication;
 	        while (results.next()){
 	        	counselApplication = new CounselApplication(); 
-	        	counselApplication.setCounselApplicationID(results.getString("CounselApplicationID"));
-	        	counselApplication.setCategory(results.getString("Category"));
-	        	counselApplication.setCounselID(results.getString("CounselID"));
-	        	counselApplication.setCustomerID(results.getString("CustomerID"));
-	        	String dateString = resultSet.getString("DateOfFirst");
+	        	counselApplication.setCategory(results.getString("category"));
+	        	counselApplication.setCounselID(results.getString("counselID"));
+	        	counselApplication.setCustomerID(results.getString("customerID"));
+	        	String dateString = resultSet.getString("dateOfFirst");
 				LocalDate dateOfFirst = LocalDate.parse(dateString);
 				counselApplication.setDateOfFirst(dateOfFirst);
-				String dateString2 = resultSet.getString("DateOfSecond");
+				String dateString2 = resultSet.getString("dateOfSecond");
 				LocalDate dateOfSecond = LocalDate.parse(dateString2);
 				counselApplication.setDateOfSecond(dateOfSecond);
-	        	counselApplication.setRequirement("Requirement");
+	        	counselApplication.setRequirement("requirement");
 	        	CounselApplicationList.add(counselApplication);
 	        }  
 			return CounselApplicationList;
@@ -67,6 +64,12 @@ public class CounselApplicationDao extends Dao{
 			String query = "DELETE FROM CounselApplication;";
 			super.delete(query);
 		}
+
+		public void update(CounselApplication counselApplication) throws Exception {
+			String query =  "UPDATE counselApplication SET counselID  = '"+counselApplication.getCounselID()+"',category ='"+counselApplication.getCategory()+"',customerID ='"+counselApplication.getCustomerID()+"',dateOfFirst ='"+counselApplication.getDateOfFirst()+"',dateOfSecond ='"+counselApplication.getDateOfSecond()+"',requirement='"+counselApplication.getRequirement()+"';";									 
+			super.update(query);
+		}
+
 	}
 
 

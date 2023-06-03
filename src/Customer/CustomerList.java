@@ -3,6 +3,8 @@ package Customer;
 import java.util.ArrayList;
 import java.util.List;
 
+import Counsel.CounselApplication;
+
 public interface CustomerList {
 
 	public boolean add(Customer customer);
@@ -22,5 +24,7 @@ public interface CustomerList {
 	public String getCustomerIdFromNameAndPH(String customerName, String customerPH);
 	public void deleteUnpaidCustomer(Customer retrieveCustomer);
 	public List<Contract> getContractFromCustomerId(String customerID, ContractList contractListImpl);
+	
+	public Customer getCustomerFromCouncels(String customerId);
 
 }

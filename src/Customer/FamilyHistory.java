@@ -13,7 +13,7 @@ public class FamilyHistory {
 		this.relationship = stringTokenizer.nextToken();
 	}
 	public FamilyHistory() {
-		
+
 	}
 	public String toString() {
 		String stringReturn = this.diseaseName + " " + this.relationship;

@@ -22,5 +22,5 @@ public interface CustomerList {
 	public String getCustomerIdFromNameAndPH(String customerName, String customerPH);
 	public void deleteUnpaidCustomer(Customer retrieveCustomer);
 	public List<Contract> getContractFromCustomerId(String customerID, ContractList contractListImpl);
-
+	public Customer getCustomerFromCouncels(String customerId);
 }

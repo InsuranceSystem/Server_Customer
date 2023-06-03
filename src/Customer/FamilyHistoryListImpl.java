@@ -1,16 +1,18 @@
 package Customer;
 
+import Dao.FamilyHistoryDao;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.rmi.Remote;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
+public class FamilyHistoryListImpl {
 
+	private FamilyHistoryDao familyHistoryDao;
 	private ArrayList<FamilyHistory> familyHistoryList;
 
 	public FamilyHistoryListImpl(String familyFileName) throws IOException, ParseException {
@@ -23,7 +25,10 @@ public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 		}
 		familyFile.close();
 	}
-
+	public FamilyHistoryListImpl() throws SQLException {
+		familyHistoryDao = new FamilyHistoryDao();
+		familyHistoryList = familyHistoryDao.retrieveAll();
+	}
 	private FamilyHistory makeFamilyHistory(String familyInfo) throws ParseException {
 		FamilyHistory familyHistory = new FamilyHistory();
 
@@ -70,27 +75,26 @@ public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 		this.familyHistoryList = familyHistoryList;
 	}
 
-	public FamilyHistory getFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) { // 고객 아이디에 맞는 가족력 반환
-		   ArrayList<FamilyHistory> familyHistories = familyHistoryListImpl.retrieve();
-		   for(FamilyHistory familyHistory : familyHistories) {
-			   if (familyHistory.getCustomerID().equals(id)) {
-				   return familyHistory;
-			   }
-		   }
-		   return null;
-	   }
+	public FamilyHistory getFamilyHistoryFromId(String id) { // 고객 아이디에 맞는 가족력 반환
+		for(FamilyHistory familyHistory : familyHistoryList) {
+			if (familyHistory.getCustomerID().equals(id)) {
+				return familyHistory;
+			}
+		}
+		return null;
+	}
 
-    public ArrayList<FamilyHistory> getFamilyHistoryByCID(String customerID) {
+	public ArrayList<FamilyHistory> getFamilyHistoryByCID(String customerID) {
 		ArrayList<FamilyHistory> familyHistories = new ArrayList<FamilyHistory>();
 		for(int i=0;i<this.familyHistoryList.size();i++) {
 			if(this.familyHistoryList.get(i).matchCID(customerID))
 				familyHistories.add(this.familyHistoryList.get(i));
 		}
 		return familyHistories;
-    }
-	public ArrayList<FamilyHistory> getAllFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) {
+	}
+	public ArrayList<FamilyHistory> getAllFamilyHistoryFromId(String id, FamilyHistoryListImpl familyHistoryListImpl) {
 		ArrayList<FamilyHistory> familyHistories = familyHistoryListImpl.retrieve();
-		ArrayList<FamilyHistory> matchingFamilyHistories = new ArrayList<FamilyHistory>();
+		ArrayList<FamilyHistory> matchingFamilyHistories = new ArrayList<>();
 
 		for (FamilyHistory familyHistory : familyHistories) {
 			if (familyHistory.getCustomerID().equals(id)) {
@@ -100,8 +104,4 @@ public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 
 		return matchingFamilyHistories;
 	}
-
-
-
-	
 }

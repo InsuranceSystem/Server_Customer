@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import Contract.Contract;
-import Contract.ContractListImpl;
+import Counsel.CounselApplication;
 import Dao.CustomerDao;
 
 public class CustomerListImpl implements CustomerList {
@@ -26,27 +25,27 @@ public class CustomerListImpl implements CustomerList {
 		this.customerList = customerDao.retrieveAll();
 	}
 
-
+	
 	public ArrayList<Customer> getResurrectCandidates(boolean resurrection) throws Exception {
-		resurrectCandidates = new ArrayList<Customer>();
-		HashMap<String, Boolean> customerMap = new HashMap<String, Boolean>(); // 중복 호출 방지를 위한 맵
+	    resurrectCandidates = new ArrayList<Customer>();
+	    HashMap<String, Boolean> customerMap = new HashMap<String, Boolean>(); // 중복 호출 방지를 위한 맵
 
-		for (Customer customer : customerList) {
-			if (customerMap.containsKey(customer.getCustomerID())) {
-				continue;
-			}
+	    for (Customer customer : customerList) {
+	        if (customerMap.containsKey(customer.getCustomerID())) {
+	            continue;
+	        }
 
-			for (Contract contract : contractList.retrieve()) {
-				if (customer.getCustomerID().equals(contract.getCustomerID())) {
-					if (contract.isResurrection() == resurrection) {
-						resurrectCandidates.add(customer);
-						customerMap.put(customer.getCustomerID(), true);
-						break;
-					}
-				}
-			}
-		}
-		return resurrectCandidates;
+	        for (Contract contract : contractList.retrieve()) {
+	            if (customer.getCustomerID().equals(contract.getCustomerID())) {
+	                if (contract.isResurrection() == resurrection) {
+	                    resurrectCandidates.add(customer);
+	                    customerMap.put(customer.getCustomerID(), true);
+	                    break;
+	                }
+	            }
+	        }
+	    }
+	    return resurrectCandidates;
 	}
 
 	public ArrayList<Customer> getExpiredContracts(boolean maturity) throws Exception {
@@ -189,6 +188,21 @@ public class CustomerListImpl implements CustomerList {
 		}
 		return null;
 	}
+
+
+	@Override
+	public boolean add(Customer customer) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	@Override
+	public Customer getCustomerFromCouncels(CounselApplication counselApplication, CustomerList customerListImpl) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 

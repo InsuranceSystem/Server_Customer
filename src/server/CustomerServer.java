@@ -63,7 +63,7 @@ public class CustomerServer extends UnicastRemoteObject implements Customer_Serv
 	}
 
 	@Override
-	public CounselApplicationListImpl getCounselApplicationList() {
+	public CounselApplicationList getCounselApplicationList() {
 		return CounselApplicationList;
 	}
 	

@@ -1,43 +1,14 @@
 package Customer;
 
-import Dao.FamilyHistoryDao;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.sql.SQLException;
-import java.text.ParseException;
+import java.rmi.Remote;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
-public class FamilyHistoryListImpl {
+public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 
-	private FamilyHistoryDao familyHistoryDao;
 	private ArrayList<FamilyHistory> familyHistoryList;
 
-	public FamilyHistoryListImpl(String familyFileName) throws IOException, ParseException {
-		BufferedReader familyFile = new BufferedReader(new FileReader(familyFileName));
-		this.familyHistoryList = new ArrayList<FamilyHistory>();
-		while (familyFile.ready()) {
-			FamilyHistory familyHistory = makeFamilyHistory(familyFile.readLine());
-			if (familyHistory != null)
-				this.familyHistoryList.add(familyHistory);
-		}
-		familyFile.close();
-	}
-	public FamilyHistoryListImpl() throws SQLException {
-		familyHistoryDao = new FamilyHistoryDao();
-		familyHistoryList = familyHistoryDao.retrieveAll();
-	}
-	private FamilyHistory makeFamilyHistory(String familyInfo) throws ParseException {
-		FamilyHistory familyHistory = new FamilyHistory();
 
-		StringTokenizer stringTokenizer = new StringTokenizer(familyInfo);
-		familyHistory.setCustomerID(stringTokenizer.nextToken());
-		familyHistory.setDiseaseName(stringTokenizer.nextToken());
-		familyHistory.setRelationship(stringTokenizer.nextToken());
-		return familyHistory;
-	}
 
 	public boolean add(FamilyHistory familyHistory) {
 		if (this.familyHistoryList.add(familyHistory))
@@ -75,26 +46,27 @@ public class FamilyHistoryListImpl {
 		this.familyHistoryList = familyHistoryList;
 	}
 
-	public FamilyHistory getFamilyHistoryFromId(String id) { // 고객 아이디에 맞는 가족력 반환
-		for(FamilyHistory familyHistory : familyHistoryList) {
-			if (familyHistory.getCustomerID().equals(id)) {
-				return familyHistory;
-			}
-		}
-		return null;
-	}
+	public FamilyHistory getFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) { // 고객 아이디에 맞는 가족력 반환
+		   ArrayList<FamilyHistory> familyHistories = familyHistoryListImpl.retrieve();
+		   for(FamilyHistory familyHistory : familyHistories) {
+			   if (familyHistory.getCustomerID().equals(id)) {
+				   return familyHistory;
+			   }
+		   }
+		   return null;
+	   }
 
-	public ArrayList<FamilyHistory> getFamilyHistoryByCID(String customerID) {
+    public ArrayList<FamilyHistory> getFamilyHistoryByCID(String customerID) {
 		ArrayList<FamilyHistory> familyHistories = new ArrayList<FamilyHistory>();
 		for(int i=0;i<this.familyHistoryList.size();i++) {
 			if(this.familyHistoryList.get(i).matchCID(customerID))
 				familyHistories.add(this.familyHistoryList.get(i));
 		}
 		return familyHistories;
-	}
-	public ArrayList<FamilyHistory> getAllFamilyHistoryFromId(String id, FamilyHistoryListImpl familyHistoryListImpl) {
+    }
+	public ArrayList<FamilyHistory> getAllFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) {
 		ArrayList<FamilyHistory> familyHistories = familyHistoryListImpl.retrieve();
-		ArrayList<FamilyHistory> matchingFamilyHistories = new ArrayList<>();
+		ArrayList<FamilyHistory> matchingFamilyHistories = new ArrayList<FamilyHistory>();
 
 		for (FamilyHistory familyHistory : familyHistories) {
 			if (familyHistory.getCustomerID().equals(id)) {
@@ -104,4 +76,8 @@ public class FamilyHistoryListImpl {
 
 		return matchingFamilyHistories;
 	}
+
+
+
+	
 }

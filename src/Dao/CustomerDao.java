@@ -1,31 +1,54 @@
 package Dao;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
+
 import Customer.Customer;
+import Customer.Customer.EGender;
 import Customer.CustomerList;
 
 public class CustomerDao extends Dao {
 	public CustomerDao() throws Exception {
+		
+	try {
 		super.connect();
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 	}
-
+}
 	public void create(Customer customer) {
-		String query = "INSERT INTO Customer (customerID, customerName, birth, eGender, pnumber, job, address) VALUES ('"
-				+ customer.getCustomerID() + "', '" + customer.getCustomerName() + "', '" + customer.getBirth() + "', '"
-				+ customer.getEGender() + "', '" + customer.getPnumber() + "', '" + customer.getJob() + "', '"
+		String query = "INSERT INTO Customer (customerID, customerName, job, pnumber, birth, eGender, address) VALUES ('"
+				+ customer.getCustomerID() + "', '" + customer.getCustomerName() + "', '" + customer.getJob() + "', '"
+				+ customer.getPnumber() + "', '" + customer.getBirth() + "', '" + customer.getEGender() + "', '"
 				+ customer.getAddress() + "')";
 		super.create(query);
 	}
 
-	public CustomerList retrieveAll(Customer customer) {
+	public ArrayList<Customer> retrieveAll()throws Exception {
 		String query = "SELECT * FROM Customer";
-		super.retrieve(query);
-		// CustomerList에 ResultSet 값을 채우는 부분 구현
-		return null;
+		ResultSet results = super.retrieve(query);
+        ArrayList<Customer> customerList = new ArrayList<Customer>();
+        Customer customer;
+        while (results.next()){
+        	customer = new Customer(); 
+        	customer.setCustomerID(results.getString("customerID"));
+        	customer.setCustomerName(results.getString("customerName"));
+        	customer.setJob(results.getString("job"));
+        	customer.setPnumber(results.getString("pnumber"));
+        	customer.setBirth(results.getString("birth"));
+        	for (EGender gender : EGender.values()) {
+        		if (gender.getGenderStr().equals(results.getString("eGender")))
+        			customer.setEGender(gender);
+        	}
+        	customer.setAddress(results.getString("address"));
+        	customerList.add(customer);
+        }  
+		return customerList;		
 	}
 
-	public CustomerList retrieveById(Customer customer) {
-		String query = "SELECT * FROM Customer WHERE customerID = '" + customer.getCustomerID() + "'";
+	public CustomerList retrieveByCustomerID(String customerID) {
+		String query = "SELECT * FROM Customer WHERE customerID = '" + customerID + "'";
 		super.retrieve(query);
 		// CustomerList에 ResultSet 값을 채우는 부분 구현
 		return null;
@@ -39,13 +62,13 @@ public class CustomerDao extends Dao {
 		super.update(query);
 	}
 
-	public void deleteAll(Customer customer) {
+	public void deleteAll() throws Exception {
 		String query = "DELETE FROM Customer";
 		super.delete(query);
 	}
 
-	public void deleteById(Customer customer) {
-		String query = "DELETE FROM Customer WHERE customerID = '" + customer.getCustomerID() + "'";
+	public void deleteById(String customerID)throws Exception {
+		String query = "DELETE FROM Customer WHERE customerID = '" + customerID + "'";
 		super.delete(query);
 	}
 	

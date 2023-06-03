@@ -50,21 +50,21 @@ public class CustomerServer extends UnicastRemoteObject implements Customer_Serv
 		}
 	}
 	@Override
-	public CustomerList getCustomerList() {
+	public CustomerList getCustomerList() throws RemoteException{
 		return CustomerList;
 	}
 
 	@Override
-	public FamilyHistoryList getFamilyHistoryList() {
+	public FamilyHistoryList getFamilyHistoryList() throws RemoteException{
 		return FamilyHistoryList;
 	}
 	@Override
-	public CounselList getCounselList() {
+	public CounselList getCounselList() throws RemoteException{
 		return CounselList;
 	}
 
 	@Override
-	public CounselApplicationList getCounselApplicationList() {
+	public CounselApplicationList getCounselApplicationList() throws RemoteException{
 		return CounselApplicationList;
 	}
 	

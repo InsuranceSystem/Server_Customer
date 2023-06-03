@@ -5,6 +5,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
 import Counsel.CounselApplicationListImpl;
@@ -33,14 +35,15 @@ public class CustomerServer extends UnicastRemoteObject implements Customer_Serv
 	
 	public static void main(String[] args) throws Exception {
 		try {
-			CustomerServer server = new CustomerServer();
-			Naming.rebind("CustomerServer", server);		
-
+			Registry registry = LocateRegistry.createRegistry(1500);
+			CustomerServer server = new CustomerServer();	
+			registry.rebind("CustomerServer", server);	
+	
 			CustomerList = new CustomerListImpl();
 			FamilyHistoryList = new FamilyHistoryListImpl();
 			CounselList = new CounselListImpl();
 			CounselApplicationList = new CounselApplicationListImpl();
-					
+
 			System.out.println("Customer Server is ready !!!");		
 	
 		} catch (RemoteException e) {

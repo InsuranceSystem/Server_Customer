@@ -1,74 +1,97 @@
 package Dao;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import Exception.DaoException;
 import Interface.Counsel;
-
 
 public class CounselDao extends Dao {
 	public CounselDao() {
 		try {
 			super.connect();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("데이터베이스 연결에 실패했습니다." + e.getMessage());
+			System.out.println("DAO Exception 발생한 메서드: " + ((DaoException) e).getDaoMethodName());
 		}
 	}
-	public void create(Counsel counsel) throws Exception {
-		//쿼리 제조
-		String query = "insert into Counsel(counselID,customerID,content,managerName,requirement, dateOfCounsel) values ( " +
-				" '" + counsel.getCounselID()+ "', " +
-				" '" + counsel.getCustomerID()+ "', " +
-				" '" + counsel.getContent()+ "', " +
-				" '" + counsel.getManagerName()+ "', " +
-				" '" + counsel.getRequirement()+ "', " +
-				" '" + counsel.getDateOfCounsel() + "')";
-		super.create(query);
+
+	public void create(Counsel counsel) throws DaoException {
+		String query = "INSERT INTO Counsel (counselID, customerID, content, managerName, requirement, dateOfCounsel) VALUES (?, ?, ?, ?, ?, ?)";
+		try (PreparedStatement statement = connect.prepareStatement(query)) {
+			statement.setString(1, counsel.getCounselID());
+			statement.setString(2, counsel.getCustomerID());
+			statement.setString(3, counsel.getContent());
+			statement.setString(4, counsel.getManagerName());
+			statement.setString(5, counsel.getRequirement());
+			statement.setObject(6, counsel.getDateOfCounsel());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DaoException("Counsel 생성에 실패했습니다.", "create");
+		}
 	}
 
-	public ArrayList<Counsel> retrieveAll() throws Exception {
-		String query = "select * from Counsel;";
-		ResultSet results = super.retrieve(query);
-        ArrayList<Counsel> counselList = new ArrayList<Counsel>();
-        Counsel counsel;
-        while (results.next()){
-        	counsel = new Counsel(); 
-        	counsel.setCounselID(results.getString("counselID"));
-        	counsel.setCustomerID(results.getString("customerID"));
-        	counsel.setContent(results.getString("content"));
-        	counsel.setManagerName(results.getString("managerName"));
-        	counsel.setRequirement(results.getString("requirement"));
-			String dateString = resultSet.getString("dateOfCounsel");
-			LocalDate dateOfCounsel = LocalDate.parse(dateString);
-			counsel.setDateOfCounsel(dateOfCounsel);
-        	counselList.add(counsel);
-        }  
-		return counselList;
+	public ArrayList<Counsel> retrieveAll() throws DaoException {
+		String query = "SELECT * FROM Counsel";
+		try (PreparedStatement statement = connect.prepareStatement(query)) {
+			ResultSet resultSet = statement.executeQuery();
+			ArrayList<Counsel> counselList = new ArrayList<>();
+			while (resultSet.next()) {
+				Counsel counsel = new Counsel();
+				counsel.setCounselID(resultSet.getString("counselID"));
+				counsel.setCustomerID(resultSet.getString("customerID"));
+				counsel.setContent(resultSet.getString("content"));
+				counsel.setManagerName(resultSet.getString("managerName"));
+				counsel.setRequirement(resultSet.getString("requirement"));
+				counsel.setDateOfCounsel(resultSet.getObject("dateOfCounsel", LocalDate.class));
+				counselList.add(counsel);
+			}
+			return counselList;
+		} catch (SQLException e) {
+			throw new DaoException("Counsel 전체 조회에 실패했습니다.", "retrieveAll");
+		}
 	}
 
-	public void deleteByCustomerId(String CustomerID) throws Exception {
-		//쿼리 제조
-		String query = "DELETE FROM Counsel WHERE customerID='"+CustomerID+"';";
-		super.delete(query);
-	}
-	public void deleteByCounselId(String counselID) throws Exception {
-		//쿼리 제조
-		String query = "DELETE FROM Counsel WHERE counselID='"+counselID+"';";
-		super.delete(query);
-	}
-	public void deleteAll() throws Exception {
-		//쿼리 제조
-		String query = "DELETE FROM Counsel;";
-		super.delete(query);
+	public void deleteByCustomerId(String customerID) throws DaoException {
+		String query = "DELETE FROM Counsel WHERE customerID = ?";
+		try (PreparedStatement statement = connect.prepareStatement(query)) {
+			statement.setString(1, customerID);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DaoException("customerID로 Counsel 삭제에 실패했습니다.", "deleteByCustomerId");
+		}
 	}
 
-	public void updateCounsel(Counsel updateCounsel) throws Exception {
-		String query =  
-				"UPDATE Counsel "
-						+ "SET content = '"+updateCounsel.getContent()+"'"
-						+" WHERE CounselID='"+updateCounsel.getCounselID()+"';";
-					super.update(query);
+	public void deleteByCounselId(String counselID) throws DaoException {
+		String query = "DELETE FROM Counsel WHERE counselID = ?";
+		try (PreparedStatement statement = connect.prepareStatement(query)) {
+			statement.setString(1, counselID);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DaoException("counselID로 Counsel 삭제에 실패했습니다.", "deleteByCounselId");
+		}
+	}
+
+	public void deleteAll() throws DaoException {
+		String query = "DELETE FROM Counsel";
+		try (PreparedStatement statement = connect.prepareStatement(query)) {
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DaoException("Counsel 전체 삭제에 실패했습니다.", "deleteAll");
+		}
+	}
+
+	public void updateCounsel(Counsel updateCounsel) throws DaoException {
+		String query = "UPDATE Counsel SET content = ? WHERE CounselID = ?";
+		try (PreparedStatement statement = connect.prepareStatement(query)) {
+			statement.setString(1, updateCounsel.getContent());
+			statement.setString(2, updateCounsel.getCounselID());
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DaoException("Counsel 업데이트에 실패했습니다.", "updateCounsel");
+		}
 	}
 }

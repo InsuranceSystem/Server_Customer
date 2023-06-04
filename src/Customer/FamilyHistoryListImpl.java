@@ -2,7 +2,10 @@ package Customer;
 
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+
+import Interface.FamilyHistoryList;
 
 public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 
@@ -46,7 +49,7 @@ public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 		this.familyHistoryList = familyHistoryList;
 	}
 
-	public FamilyHistory getFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) { // 고객 아이디에 맞는 가족력 반환
+	public FamilyHistory getFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) throws RemoteException { // 고객 아이디에 맞는 가족력 반환
 		   ArrayList<FamilyHistory> familyHistories = familyHistoryListImpl.retrieve();
 		   for(FamilyHistory familyHistory : familyHistories) {
 			   if (familyHistory.getCustomerID().equals(id)) {
@@ -64,7 +67,7 @@ public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 		}
 		return familyHistories;
     }
-	public ArrayList<FamilyHistory> getAllFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) {
+	public ArrayList<FamilyHistory> getAllFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) throws RemoteException {
 		ArrayList<FamilyHistory> familyHistories = familyHistoryListImpl.retrieve();
 		ArrayList<FamilyHistory> matchingFamilyHistories = new ArrayList<FamilyHistory>();
 

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import Customer.Customer;
 import Customer.Customer.EGender;
-import Customer.CustomerList;
+import Interface.CustomerList;
 
 public class CustomerDao extends Dao {
 	public CustomerDao() throws Exception {

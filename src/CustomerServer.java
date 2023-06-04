@@ -13,21 +13,18 @@ import Counsel.CounselApplicationListImpl;
 import Counsel.CounselListImpl;
 import Customer.CustomerListImpl;
 import Customer.FamilyHistoryListImpl;
-import Interface.Customer_ServerIF;
-import Counsel.CounselApplicationList;
-import Counsel.CounselList;
-import Customer.CustomerList;
-import Customer.FamilyHistoryList;
+import Interface.CounselApplicationList;
+import Interface.CounselList;
+import Interface.CustomerList;
+import Interface.FamilyHistoryList;
 
 
 
 
-public class CustomerServer extends UnicastRemoteObject implements Customer_ServerIF{
+
+public class CustomerServer extends UnicastRemoteObject{
 	private static final long serialVersionUID = 1L;
-	private static CustomerList CustomerList;
-	private static FamilyHistoryList FamilyHistoryList;
-	private static CounselList CounselList;
-	private static CounselApplicationList CounselApplicationList;
+	
 	
 	protected CustomerServer() throws RemoteException {
 		super();
@@ -35,14 +32,47 @@ public class CustomerServer extends UnicastRemoteObject implements Customer_Serv
 	
 	public static void main(String[] args) throws Exception {
 		try {
-			Registry registry = LocateRegistry.createRegistry(1500);
-			CustomerServer server = new CustomerServer();	
-			registry.rebind("CustomerServer", server);	
+			System.setProperty("java.security.policy", "policy.txt");
+			System.setSecurityManager(null);	
+
+			
+			
+			
+			
+			
+			CustomerList customerList = new CustomerListImpl();
+			CustomerList stub1 = (CustomerList) UnicastRemoteObject.exportObject(customerList, 0);
+			Registry registry1 = LocateRegistry.createRegistry(1305);
+		    registry1.rebind("CustomerList", stub1);
+			
+			FamilyHistoryList familyHistoryList = new FamilyHistoryListImpl();
+			FamilyHistoryList stub2 = (FamilyHistoryList) UnicastRemoteObject.exportObject(familyHistoryList, 0);
+			Registry registry2 = LocateRegistry.createRegistry(1306);
+		    registry2.rebind("FamilyHistoryList", stub2);
+			
+			CounselList counselList = new CounselListImpl();
+			CounselList stub3 = (CounselList) UnicastRemoteObject.exportObject(counselList, 0);
+			Registry registry3 = LocateRegistry.createRegistry(1307);
+		    registry3.rebind("CounselList", stub3);
+			
+			CounselApplicationList counselApplicationList = new CounselApplicationListImpl();
+			CounselApplicationList stub4 = (CounselApplicationList) UnicastRemoteObject.exportObject(counselApplicationList, 0);
+
+	        Registry registry4 = LocateRegistry.createRegistry(1308);
+	        registry4.rebind("CounselApplicationList", stub4);
 	
-			CustomerList = new CustomerListImpl();
-			FamilyHistoryList = new FamilyHistoryListImpl();
-			CounselList = new CounselListImpl();
-			CounselApplicationList = new CounselApplicationListImpl();
+
+		       
+		        
+		        // SurveyList 객체 등록
+	
+		      
+			
+		       
+		        
+		        // SurveyList 객체 등록
+	
+			
 
 			System.out.println("Customer Server is ready !!!");		
 	
@@ -52,23 +82,6 @@ public class CustomerServer extends UnicastRemoteObject implements Customer_Serv
 			e.printStackTrace();	
 		}
 	}
-	@Override
-	public CustomerList getCustomerList() throws RemoteException{
-		return CustomerList;
-	}
 
-	@Override
-	public FamilyHistoryList getFamilyHistoryList() throws RemoteException{
-		return FamilyHistoryList;
-	}
-	@Override
-	public CounselList getCounselList() throws RemoteException{
-		return CounselList;
-	}
-
-	@Override
-	public CounselApplicationList getCounselApplicationList() throws RemoteException{
-		return CounselApplicationList;
-	}
 	
 }

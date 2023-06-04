@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Dao.CounselDao;
+import Interface.CounselList;
 
 public class CounselListImpl implements CounselList,Remote {
 

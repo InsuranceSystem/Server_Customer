@@ -1,12 +1,14 @@
 package Customer;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import Counsel.CounselApplication;
 import Dao.CustomerDao;
+import Interface.CustomerList;
 
 public class CustomerListImpl implements CustomerList, Remote {
 	// 만기계약대상자/미납대상자/부활대상자 enum
@@ -199,5 +201,7 @@ public class CustomerListImpl implements CustomerList, Remote {
 		}
 		return null;
 	}
+
+	
 
 }

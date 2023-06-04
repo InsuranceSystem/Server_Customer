@@ -3,6 +3,7 @@ import java.rmi.Remote;
 import java.util.ArrayList;
 
 import Dao.CounselApplicationDao;
+import Interface.CounselApplicationList;
 
 
 public class CounselApplicationListImpl implements CounselApplicationList, Remote{

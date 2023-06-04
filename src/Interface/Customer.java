@@ -1,4 +1,4 @@
-package Customer;
+package Interface;
 
 import java.io.Serializable;
 

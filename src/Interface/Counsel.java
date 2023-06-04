@@ -1,10 +1,11 @@
-package Counsel;
+package Interface;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-import Customer.Customer;
 
-public class Counsel {
+public class Counsel implements Serializable {
+    private static final long serialVersionUID = 1L;
 	private String content; // 
 	private String managerName;
 	private LocalDate dateOfCounsel;

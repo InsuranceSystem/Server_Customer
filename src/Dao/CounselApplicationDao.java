@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import Counsel.CounselApplication;
+import Interface.CounselApplication;
 	public class CounselApplicationDao extends Dao{
 		public CounselApplicationDao() {
 			try {

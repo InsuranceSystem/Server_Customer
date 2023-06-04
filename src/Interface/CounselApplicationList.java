@@ -4,7 +4,6 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import Counsel.CounselApplication;
 
 
 public interface CounselApplicationList extends Remote{

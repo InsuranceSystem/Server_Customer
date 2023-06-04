@@ -1,10 +1,11 @@
-package Customer;
+package ListImpl;
 
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import Interface.FamilyHistory;
 import Interface.FamilyHistoryList;
 
 public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{

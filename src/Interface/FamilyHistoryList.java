@@ -5,7 +5,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import Customer.FamilyHistory;
 
 public interface FamilyHistoryList extends Remote{
 

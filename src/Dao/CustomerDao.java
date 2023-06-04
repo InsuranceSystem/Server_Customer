@@ -3,8 +3,8 @@ package Dao;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-import Customer.Customer;
-import Customer.Customer.EGender;
+import Interface.Customer;
+import Interface.Customer.EGender;
 import Interface.CustomerList;
 
 public class CustomerDao extends Dao {

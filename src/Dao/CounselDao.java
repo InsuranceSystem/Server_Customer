@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import Counsel.Counsel;
+import Interface.Counsel;
 
 
 public class CounselDao extends Dao {

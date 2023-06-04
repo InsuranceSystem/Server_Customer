@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import Customer.FamilyHistory;
+import Interface.FamilyHistory;
 
 public class FamilyHistoryDao extends Dao {
 		public FamilyHistoryDao() {

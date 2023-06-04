@@ -3,11 +3,7 @@ package Interface;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.List;
 
-import Counsel.CounselApplication;
-import Customer.Customer;
-import Customer.CustomerListImpl;
 
 public interface CustomerList extends Remote{
 
@@ -28,6 +24,4 @@ public interface CustomerList extends Remote{
 //	public void deleteUnpaidCustomer(Customer retrieveCustomer);
 //	public List<Contract> getContractFromCustomerId(String customerID, ContractList contractListImpl);
 //	public Customer getCustomerFromCouncels(String customerId);
-
-	public Customer getCustomerFromCouncels(CounselApplication counselApplication, CustomerListImpl customerListImpl) throws RemoteException;
 }

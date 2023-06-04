@@ -1,4 +1,4 @@
-package Customer;
+package ListImpl;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import Counsel.CounselApplication;
+import Interface.CounselApplication;
+import Interface.Customer;
 import Dao.CustomerDao;
 import Interface.CustomerList;
 
@@ -139,15 +140,6 @@ public class CustomerListImpl implements CustomerList, Remote {
 //			return unpaidCustomers.remove(customer);
 //		}
 
-	public Customer getCustomerFromCouncels(CounselApplication counselApplication, CustomerListImpl customerListImpl) {
-		Customer selectedCustomer = null;
-		for (Customer customer : customerListImpl.retrieve()) {
-			if (customer.getCustomerID().equals(counselApplication.getCustomerID()))
-				selectedCustomer = customer;
-		}
-		return selectedCustomer;
-	}
-
 //		public static List<Contract> getContractFromCustomerId(String id, ContractListImpl contractListImpl)
 //				throws Exception {
 //			List<Contract> selectedContracts = new ArrayList<Contract>();
@@ -201,6 +193,8 @@ public class CustomerListImpl implements CustomerList, Remote {
 		}
 		return null;
 	}
+
+	
 
 	
 

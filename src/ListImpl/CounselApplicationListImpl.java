@@ -1,7 +1,8 @@
-package Counsel;
+package ListImpl;
 import java.rmi.Remote;
 import java.util.ArrayList;
 
+import Interface.CounselApplication;
 import Dao.CounselApplicationDao;
 import Interface.CounselApplicationList;
 

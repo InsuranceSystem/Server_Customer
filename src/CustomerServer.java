@@ -9,10 +9,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
-import Counsel.CounselApplicationListImpl;
-import Counsel.CounselListImpl;
-import Customer.CustomerListImpl;
-import Customer.FamilyHistoryListImpl;
+import ListImpl.CounselApplicationListImpl;
+import ListImpl.CounselListImpl;
+import ListImpl.CustomerListImpl;
+import ListImpl.FamilyHistoryListImpl;
 import Interface.CounselApplicationList;
 import Interface.CounselList;
 import Interface.CustomerList;

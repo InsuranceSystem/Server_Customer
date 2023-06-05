@@ -3,16 +3,23 @@ package ListImpl;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
+import Dao.FamilyHistoryDao;
+import Exception.DaoException;
 import Interface.FamilyHistory;
 import Interface.FamilyHistoryList;
 
 public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 
+	private FamilyHistoryDao familyHistoryDao;
 	private ArrayList<FamilyHistory> familyHistoryList;
 
-
+	public FamilyHistoryListImpl() throws SQLException, DaoException {
+		familyHistoryDao = new FamilyHistoryDao();
+		familyHistoryList = familyHistoryDao.retrieveAll();
+	}
 
 	public boolean add(FamilyHistory familyHistory) {
 		if (this.familyHistoryList.add(familyHistory))
@@ -50,8 +57,8 @@ public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 		this.familyHistoryList = familyHistoryList;
 	}
 
-	public FamilyHistory getFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) throws RemoteException { // 고객 아이디에 맞는 가족력 반환
-		   ArrayList<FamilyHistory> familyHistories = familyHistoryListImpl.retrieve();
+	public FamilyHistory getFamilyHistoryFromId(String id) throws RemoteException { // 고객 아이디에 맞는 가족력 반환
+		   ArrayList<FamilyHistory> familyHistories = familyHistoryList;
 		   for(FamilyHistory familyHistory : familyHistories) {
 			   if (familyHistory.getCustomerID().equals(id)) {
 				   return familyHistory;
@@ -68,11 +75,10 @@ public class FamilyHistoryListImpl implements FamilyHistoryList, Remote{
 		}
 		return familyHistories;
     }
-	public ArrayList<FamilyHistory> getAllFamilyHistoryFromId(String id, FamilyHistoryList familyHistoryListImpl) throws RemoteException {
-		ArrayList<FamilyHistory> familyHistories = familyHistoryListImpl.retrieve();
+	public ArrayList<FamilyHistory> getAllFamilyHistoryFromId(String id) throws RemoteException {
 		ArrayList<FamilyHistory> matchingFamilyHistories = new ArrayList<FamilyHistory>();
 
-		for (FamilyHistory familyHistory : familyHistories) {
+		for (FamilyHistory familyHistory : familyHistoryList) {
 			if (familyHistory.getCustomerID().equals(id)) {
 				matchingFamilyHistories.add(familyHistory);
 			}

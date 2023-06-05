@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import Interface.CounselApplication;
-import Interface.Customer;
 import Dao.CustomerDao;
+import Interface.Contract;
+import Interface.Customer;
 import Interface.CustomerList;
 
 public class CustomerListImpl implements CustomerList, Remote {
@@ -28,53 +28,55 @@ public class CustomerListImpl implements CustomerList, Remote {
 		this.customerDao = new CustomerDao();
 		this.customerList = customerDao.retrieveAll();
 	}
+	@Override
+	public ArrayList<Customer> getResurrectCandidates(boolean resurrection, List<Contract> contractList)
+			throws RemoteException {
+		resurrectCandidates = new ArrayList<Customer>();
+	    HashMap<String, Boolean> customerMap = new HashMap<String, Boolean>(); // 중복 호출 방지를 위한 맵
 
-//		public ArrayList<Customer> getResurrectCandidates(boolean resurrection) throws Exception {
-//			resurrectCandidates = new ArrayList<Customer>();
-//			HashMap<String, Boolean> customerMap = new HashMap<String, Boolean>(); // 중복 호출 방지를 위한 맵
-//
-//			for (Customer customer : customerList) {
-//				if (customerMap.containsKey(customer.getCustomerID())) {
-//					continue;
-//				}
-//
-//				for (Contract contract : contractList.retrieve()) {
-//					if (customer.getCustomerID().equals(contract.getCustomerID())) {
-//						if (contract.isResurrection() == resurrection) {
-//							resurrectCandidates.add(customer);
-//							customerMap.put(customer.getCustomerID(), true);
-//							break;
-//						}
-//					}
-//				}
-//			}
-//			return resurrectCandidates;
-//		}
+	    for (Customer customer : customerList) {
+	        if (customerMap.containsKey(customer.getCustomerID())) {
+	            continue;
+	        }
 
-//		public ArrayList<Customer> getExpiredContracts(boolean maturity) throws Exception {
-//			expiredContracts = new ArrayList<Customer>(); // 만기계약 리스트
-//			HashMap<String, Boolean> customerMap = new HashMap<String, Boolean>(); // 중복 호출 방지를 위한 맵
-//
-//			for (Customer customer : customerList) {
-//				if (customerMap.containsKey(customer.getCustomerID())) {
-//					continue; // 이미 출력된 고객이므로 중복 호출 방지
-//				}
-//
-//				for (Contract contract : contractList.retrieve()) {
-//					if (customer.getCustomerID().equals(contract.getCustomerID())) {
-//						if (contract.isMaturity()) {
-//							// 새로 만듬 -> 1 3 4
-//							// 1 3 4 -> 1 2 3 4
-//							expiredContracts.add(customer);
-//							customerMap.put(customer.getCustomerID(), true); // 고객 ID를 맵에 추가
-//							break; // 해당 고객의 계약이 만기되었으므로 다음 고객으로 넘어감
-//						}
-//					}
-//				}
-//			}
-//			return expiredContracts;
-//
-//		}
+	        for (Contract contract : contractList) {
+	            if (customer.getCustomerID().equals(contract.getCustomerID())) {
+	                if (contract.isResurrection() == resurrection) {
+	                    resurrectCandidates.add(customer);
+	                    customerMap.put(customer.getCustomerID(), true);
+	                    break;
+	                }
+	            }
+	        }
+	    }
+	    return resurrectCandidates;
+	}
+
+	@Override
+	public ArrayList<Customer> getExpiredContracts(boolean maturity, List<Contract> contractList)
+			throws RemoteException {
+		expiredContracts = new ArrayList<Customer>(); // 만기계약 리스트
+		HashMap<String, Boolean> customerMap = new HashMap<String, Boolean>(); // 중복 호출 방지를 위한 맵
+
+		for (Customer customer : customerList) {
+			if (customerMap.containsKey(customer.getCustomerID())) {
+				continue; // 이미 출력된 고객이므로 중복 호출 방지
+			}
+
+			for (Contract contract : contractList) {
+				if (customer.getCustomerID().equals(contract.getCustomerID())) {
+					if (contract.isMaturity()) {
+						// 새로 만듬 -> 1 3 4
+						// 1 3 4 -> 1 2 3 4
+						expiredContracts.add(customer);
+						customerMap.put(customer.getCustomerID(), true); // 고객 ID를 맵에 추가
+						break; // 해당 고객의 계약이 만기되었으므로 다음 고객으로 넘어감
+					}
+				}
+			}
+		}
+		return expiredContracts;
+	}
 
 	public boolean add(Customer customer) {
 		if (this.customerList.add(customer))
@@ -127,14 +129,14 @@ public class CustomerListImpl implements CustomerList, Remote {
 		}
 		return null;
 	}
-//
-//		public boolean deleteResurrectCandidatesCustomer(Customer customer) { // 부활 대상자에서 제외
-//			return resurrectCandidates.remove(customer);
-//		}
-//
-//		public boolean deleteExpiredCustomer(Customer customer) { // 만기계약 대상자에서 제외
-//			return expiredContracts.remove(customer);
-//		}
+	@Override
+	public boolean deleteResurrectCandidatesCustomer(Customer customer) throws RemoteException {
+		return resurrectCandidates.remove(customer);
+	}
+	@Override
+	public boolean deleteExpiredCustomer(Customer customer) throws RemoteException {
+		return expiredContracts.remove(customer);
+	}
 //
 //		public boolean deleteUnpaidCustomer(Customer customer) { // 미납 대상자에서 제외
 //			return unpaidCustomers.remove(customer);
@@ -193,9 +195,4 @@ public class CustomerListImpl implements CustomerList, Remote {
 		}
 		return null;
 	}
-
-	
-
-	
-
 }

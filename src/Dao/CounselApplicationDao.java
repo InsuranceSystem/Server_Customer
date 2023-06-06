@@ -1,5 +1,6 @@
 package Dao;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +10,10 @@ import java.util.ArrayList;
 import Exception.DaoException;
 import Interface.CounselApplication;
 
-public class CounselApplicationDao extends Dao {
+public class CounselApplicationDao extends Dao implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
 	public CounselApplicationDao() {
 		try {
 			super.connect();

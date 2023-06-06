@@ -88,5 +88,7 @@ public class CounselApplication implements Serializable {
 	public void setCounselApplicationList(ArrayList<CounselApplication> counselApplicationList) {
 		CounselApplicationList = counselApplicationList;
 	}
-	
+	public boolean matchIdWithCustomer(String customerID) {
+		return this.customerID.equals(customerID);
+	}
 }

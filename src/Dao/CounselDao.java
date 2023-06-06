@@ -1,5 +1,6 @@
 package Dao;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import Exception.DaoException;
 import Interface.Counsel;
 
-public class CounselDao extends Dao {
+public class CounselDao extends Dao implements Serializable{
 	public CounselDao() {
 		try {
 			super.connect();
@@ -20,14 +21,14 @@ public class CounselDao extends Dao {
 	}
 
 	public void create(Counsel counsel) throws DaoException {
-		String query = "INSERT INTO Counsel (counselID, customerID, content, managerName, requirement, dateOfCounsel) VALUES (?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO Counsel (counselID, customerID, content, managerName, dateOfCounsel) VALUES (?, ?, ?, ?, ?)";
 		try (PreparedStatement statement = connect.prepareStatement(query)) {
 			statement.setString(1, counsel.getCounselID());
 			statement.setString(2, counsel.getCustomerID());
-			statement.setString(3, counsel.getContent());
-			statement.setString(4, counsel.getManagerName());
-			statement.setString(5, counsel.getRequirement());
-			statement.setObject(6, counsel.getDateOfCounsel());
+			statement.setString(3, (counsel.getContent() == null ? "-" : counsel.getContent()));
+			statement.setString(4, (counsel.getManagerName() == null ? "-" : counsel.getManagerName()));
+			if (counsel.getDateOfCounsel() == null) statement.setNull(5, java.sql.Types.DATE);
+		    else statement.setObject(5, counsel.getDateOfCounsel());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw new DaoException("Counsel 생성에 실패했습니다.", "create");
@@ -45,7 +46,6 @@ public class CounselDao extends Dao {
 				counsel.setCustomerID(resultSet.getString("customerID"));
 				counsel.setContent(resultSet.getString("content"));
 				counsel.setManagerName(resultSet.getString("managerName"));
-				counsel.setRequirement(resultSet.getString("requirement"));
 				counsel.setDateOfCounsel(resultSet.getObject("dateOfCounsel", LocalDate.class));
 				counselList.add(counsel);
 			}
@@ -84,14 +84,30 @@ public class CounselDao extends Dao {
 		}
 	}
 
+//	public void updateCounsel(Counsel updateCounsel) throws DaoException {
+//		String query = "UPDATE Counsel SET content = ? WHERE CounselID = ?";
+//		try (PreparedStatement statement = connect.prepareStatement(query)) {
+//			statement.setString(1, updateCounsel.getContent());
+//			statement.setString(2, updateCounsel.getCounselID());
+//			statement.executeUpdate();
+//		} catch (SQLException e) {
+//			throw new DaoException("Counsel 업데이트에 실패했습니다.", "updateCounsel");
+//		}
+//	}
 	public void updateCounsel(Counsel updateCounsel) throws DaoException {
-		String query = "UPDATE Counsel SET content = ? WHERE CounselID = ?";
-		try (PreparedStatement statement = connect.prepareStatement(query)) {
-			statement.setString(1, updateCounsel.getContent());
-			statement.setString(2, updateCounsel.getCounselID());
-			statement.executeUpdate();
-		} catch (SQLException e) {
-			throw new DaoException("Counsel 업데이트에 실패했습니다.", "updateCounsel");
-		}
+	    String query = "UPDATE Counsel SET customerID = ?, content = ?, managerName = ?, dateOfCounsel = ? WHERE counselID = ?";
+	    try (PreparedStatement statement = connect.prepareStatement(query)) {
+	        statement.setString(1, updateCounsel.getCustomerID());
+	        statement.setString(2, updateCounsel.getContent());
+	        statement.setString(3, updateCounsel.getManagerName());
+	        statement.setObject(4, updateCounsel.getDateOfCounsel());
+	        statement.setString(5, updateCounsel.getCounselID());
+	        statement.executeUpdate();
+	    } catch (SQLException e) {
+	        throw new DaoException("Counsel 업데이트에 실패했습니다.", "updateCounsel");
+	    }
 	}
+
+	
+	
 }

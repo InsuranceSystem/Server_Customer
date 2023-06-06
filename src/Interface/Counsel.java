@@ -12,8 +12,6 @@ public class Counsel implements Serializable {
 
 	private String counselID; // 
 	private String customerID;
-	private String requirement;
-	private Customer customer;
 
 	public String getContent() {
 		return content;
@@ -55,22 +53,10 @@ public class Counsel implements Serializable {
 		this.customerID = customerID;
 	}
 
-	public String getRequirement() {
-		return requirement;
+	public boolean matchId(String counselID) {
+		return this.counselID.equals(counselID);
 	}
-
-	public void setRequirement(String requirement) {
-		this.requirement = requirement;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-	public boolean matchId(String customerID) {
+	public boolean matchIdWithCustomer(String customerID) {
 		return this.customerID.equals(customerID);
 	}
 }

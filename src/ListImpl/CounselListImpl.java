@@ -20,9 +20,12 @@ public class CounselListImpl implements CounselList,Remote {
 
 	@Override
 	public boolean add(Counsel counsel) throws Exception {
+		int listSize = counselList.size();
+		counsel.setCounselID("C" + (listSize+1));
 		if(this.counselList.add(counsel)) {
 			counselDao.create(counsel);
-			return true;}
+			return true;
+		}
 		else return false;
 	}
 
@@ -40,21 +43,39 @@ public class CounselListImpl implements CounselList,Remote {
 
 	@Override
 	public ArrayList<Counsel> retrieve() {
-		return null;
+		return counselList;
 	}
 
 	public void update(Counsel updateCounsel) throws Exception {
-		counselDao.updateCounsel(updateCounsel);
-	}
+      for (int i = 0; i < counselList.size(); i++) {
+         Counsel counsel = counselList.get(i);
+         if (counsel.matchId(updateCounsel.getCounselID())) {
+            counsel.setCounselID(updateCounsel.getCounselID());
+            counsel.setCustomerID(updateCounsel.getCustomerID());
+            counsel.setContent(updateCounsel.getContent());
+            counsel.setDateOfCounsel(updateCounsel.getDateOfCounsel());
+            counsel.setManagerName(updateCounsel.getManagerName());
+         }
+            
+      }
+      counselDao.updateCounsel(updateCounsel);
+   }
 	public Counsel getCounselbyId(String customerID) {
 		for (int i = 0; i < this.counselList.size(); i++) {
 			Counsel counsel = (Counsel) this.counselList.get(i);
-			if (counsel.matchId(customerID))
+			if (counsel.matchIdWithCustomer(customerID))
 				return counsel;
 		}
 		return null;
 	}
-
+	public Counsel getCounselbyCounselId(String counselID) {
+		for (int i = 0; i < this.counselList.size(); i++) {
+			Counsel counsel = (Counsel) this.counselList.get(i);
+			if (counsel.matchId(counselID))
+				return counsel;
+		}
+		return null;
+	}
 	public List<Counsel> getCounselList(String customerID) {
 		List<Counsel> selectedCounsels = new ArrayList<Counsel>();
 		for (Counsel counsel : counselList) {

@@ -1,5 +1,6 @@
 package Dao;
 
+import java.io.Serializable;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,7 +11,7 @@ import Interface.Customer;
 import Interface.Customer.EGender;
 import Interface.CustomerList;
 
-public class CustomerDao extends Dao {
+public class CustomerDao extends Dao implements Serializable {
 	public CustomerDao() throws Exception {
 
 		try {

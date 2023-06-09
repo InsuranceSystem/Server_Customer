@@ -89,7 +89,11 @@ public class CounselApplicationDao extends Dao implements Serializable {
 	}
 
 	public void update(CounselApplication counselApplication) throws DaoException {
-		String query = "UPDATE counselApplication SET counselID = ?, category = ?, customerID = ?, dateOfFirst = ?, dateOfSecond = ?, requirement = ?";
+		String query = 
+				"UPDATE counselApplication "
+				+ "SET counselID = ?, category = ?, customerID = ?, "
+				+ "dateOfFirst = ?, dateOfSecond = ?, requirement = ? "
+				+ "WHERE customerID = ?";
 		try (PreparedStatement statement = connect.prepareStatement(query)) {
 			statement.setString(1, counselApplication.getCounselID());
 			statement.setString(2, counselApplication.getCategory());
@@ -97,6 +101,7 @@ public class CounselApplicationDao extends Dao implements Serializable {
 			statement.setObject(4, counselApplication.getDateOfFirst());
 			statement.setObject(5, counselApplication.getDateOfSecond());
 			statement.setString(6, counselApplication.getRequirement());
+			statement.setString(7, counselApplication.getCustomerID());
 			statement.executeUpdate();
 		} catch (SQLException e) {
 			throw new DaoException("CounselApplication 업데이트에 실패했습니다.", "update");

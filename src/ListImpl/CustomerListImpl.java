@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import Dao.CustomerDao;
+import Exception.DaoException;
 import Interface.Contract;
 import Interface.Customer;
 import Interface.CustomerList;
@@ -179,12 +180,20 @@ public class CustomerListImpl implements CustomerList, Remote {
 		return false;
 	}
 
-	public boolean update(Customer customer, String customerID) {
-		for (int i = 0; i < customerList.size(); i++) {
-			if (customerList.get(i).getCustomerID().equals(customerID))
-				customerList.set(i, customer);
+	public boolean update(Customer newCustomer, String customerID) throws RemoteException, DaoException {
+		for (Customer customer : customerList) {
+			if (customer.getCustomerID().equals(customerID)) {
+				customer.setAddress(newCustomer.getAddress());
+				customer.setBirth(newCustomer.getBirth());
+				customer.setCustomerName(newCustomer.getCustomerName());
+				customer.setEGender(newCustomer.getEGender());
+				customer.setJob(newCustomer.getJob());
+				customer.setPnumber(newCustomer.getPnumber());
+				System.out.println(customer);
+				customerDao.update(customer);
+			}
 		}
-		return false;
+		return true;
 	}
 
 	public Customer retrieveCustomerFromUnpaid(String customerID) {

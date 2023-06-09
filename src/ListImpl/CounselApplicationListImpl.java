@@ -37,7 +37,17 @@ public class CounselApplicationListImpl implements CounselApplicationList, Remot
 	}
 
 	@Override
-	public boolean update(CounselApplication counselApplication, String counselID) {
+	public boolean update(CounselApplication counselApplication) throws RemoteException, DaoException {
+		for (CounselApplication application : CounselApplicationList) {
+			if (application.getCustomerID().equals(counselApplication.getCustomerID())) {
+				application.setCategory(counselApplication.getCategory());
+				application.setCustomerID(counselApplication.getCustomerID());
+				application.setDateOfFirst(counselApplication.getDateOfFirst());
+				application.setDateOfSecond(counselApplication.getDateOfSecond());
+				application.setRequirement(counselApplication.getRequirement());
+				counselApplicationDao.update(application);
+			}
+		}
 		return false;
 	}
 

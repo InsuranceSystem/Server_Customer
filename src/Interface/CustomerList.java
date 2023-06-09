@@ -5,12 +5,14 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Exception.DaoException;
+
 
 public interface CustomerList extends Remote{
 
 	public boolean add(Customer customer) throws RemoteException;
 	public boolean delete(String customerID) throws RemoteException;
-	public boolean update(Customer customer, String customerID)throws RemoteException;
+	public boolean update(Customer customer, String customerID)throws RemoteException, DaoException;
 	public ArrayList<Customer> retrieve()throws RemoteException;
 	public Customer getCustomerByID(String customerID)throws RemoteException;
 	public Customer retrieveCustomer(String input)throws RemoteException;

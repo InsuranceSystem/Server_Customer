@@ -48,7 +48,7 @@ public class CounselApplicationListImpl implements CounselApplicationList, Remot
 				counselApplicationDao.update(application);
 			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override
